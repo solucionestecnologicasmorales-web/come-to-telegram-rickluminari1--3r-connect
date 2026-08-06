@@ -273,7 +273,7 @@ const FunnelView = ({ propertyId, onNavigate }) => {
         }}>
         
         {panels.map((panel, idx) => (
-          <div key={`${panel.type}-${panel.id}-${idx}`} style={{flex: '0 0 100%', paddingRight: '24px', display: 'flex', flexDirection: panel.type === 'property' ? 'row' : 'column', gap: '24px', alignItems: panel.type === 'property' ? 'flex-start' : 'stretch'}}>
+          <div key={`${panel.type}-${panel.id}-${idx}`} style={{flex: '0 0 100%', height: '100%', paddingRight: '24px', display: 'flex', flexDirection: panel.type === 'property' ? 'row' : 'column', gap: '24px', alignItems: panel.type === 'property' ? 'flex-start' : 'stretch'}}>
             {panel.type === 'property' && (
               <PropertyFunnelSummary 
                 propertyId={panel.id} 

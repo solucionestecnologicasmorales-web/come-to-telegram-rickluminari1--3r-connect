@@ -550,7 +550,7 @@ const ClientPortalView = () => {
       <header style={{background: '#0f172a', padding: '12px 0', borderBottom: '1px solid #1e293b'}}>
         <div style={{maxWidth: '1200px', margin: '0 auto', padding: '0 16px'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: '40px', marginBottom: '12px'}}>
-            <a href="/" style={{display: 'flex', alignItems: 'center', textDecoration: 'none', height: '40px'}}>
+            <a href="#" onClick={() => window.location.hash = ''} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', height: '40px'}}>
               <img src="/3r_gris_transparente.png" alt="3R Connect" style={{height: '100%', objectFit: 'contain'}} />
             </a>
             
@@ -569,7 +569,7 @@ const ClientPortalView = () => {
             </div>
             
             <div style={{display: 'flex', alignItems: 'center', fontSize: '14px', color: '#f8fafc'}}>
-              <a href="/admin" style={{color: '#f8fafc', textDecoration: 'none'}}>Portal Asesores</a>
+              <a href="#admin" onClick={() => { window.location.hash = 'admin'; window.location.reload(); }} style={{color: '#f8fafc', textDecoration: 'none'}}>Portal Asesores</a>
             </div>
           </div>
           
@@ -875,7 +875,7 @@ const LoginView = ({ onLogin }) => (
       </div>
       
       <div style={{marginTop: '32px', fontSize: '0.85rem'}}>
-        <a href="/" style={{color: 'var(--text-secondary)', textDecoration: 'underline'}}>Ir a la vista de cliente final (Portal B2C)</a>
+        <a href="#" onClick={(e) => { e.preventDefault(); window.location.hash = ''; window.location.reload(); }} style={{color: 'var(--text-secondary)', textDecoration: 'underline'}}>Ir a la vista de cliente final (Portal B2C)</a>
       </div>
     </div>
   </div>
@@ -886,9 +886,9 @@ function App() {
   const [currentEntity, setCurrentEntity] = useState({ type: 'property-list' });
   const [userRole, setUserRole] = useState(null);
 
-  // Simple pseudo-router
-  const isClientRoute = window.location.pathname === '/' || window.location.pathname === '';
-  const isAdminRoute = window.location.pathname.startsWith('/admin');
+  // Simple pseudo-router compatible with GitHub Pages subpaths
+  const isAdminRoute = window.location.pathname.includes('/admin') || window.location.hash.includes('#admin');
+  const isClientRoute = !isAdminRoute;
 
   if (isClientRoute) {
     return <ClientPortalView />;
