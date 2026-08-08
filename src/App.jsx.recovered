@@ -22,8 +22,7 @@ import {
   MapPin,
   Camera,
   ArrowRight,
-  Search,
-  Settings,
+  Search
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -55,41 +54,8 @@ const createPriceIcon = (price) => {
 import { AsesorCRM } from './AsesorCRM';
 import { chartData, mockProperties, mockFunnelLeads, zones, propTypes, images, names, stages } from './mockData';
 
-import Sidebar from './components/globals/Sidebar';
-import AcademyView from './components/pages/AcademyView';
-import CalendarSimulationView from './components/pages/CalendarSimulationView';
-import CampaignManagerView from './components/pages/CampaignManagerView';
-import ClientDirectoryView from './components/pages/ClientDirectoryView';
-import EmailCenterView from './components/pages/EmailCenterView';
-import InventoryView from './components/pages/InventoryView';
-import OpsDirectoryView from './components/pages/OpsDirectoryView';
-import PdfViewerView from './components/pages/PdfViewerView';
-import PqrDashboardView from './components/pages/PqrDashboardView';
-import AgentProfileView from './components/pages/AgentProfileView';
-import SalesClosingsView from './components/pages/SalesClosingsView';
-import HelpCenterView from './components/pages/HelpCenterView';
-import PropertyPromotionView from './components/pages/PropertyPromotionView';
-import AiRecommendationsView from './components/pages/AiRecommendationsView';
-import OwnersDirectoryView from './components/pages/OwnersDirectoryView';
-import TaskResolutionView from './components/pages/TaskResolutionView';
-import TeamDirectoryView from './components/pages/TeamDirectoryView';
-import AppointmentDetailsView from './components/pages/AppointmentDetailsView';
-
-const DashboardView = ({ onNavigate }) => {
-  const [showPenalty, setShowPenalty] = useState(true);
-  return (
+const DashboardView = ({ onNavigate }) => (
   <div className="dashboard-grid animate-fade-in">
-    {showPenalty && (
-      <div className="glass-card" style={{gridColumn: 'span 12', padding: '16px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '16px'}}>
-        <AlertTriangle size={24} color="#ef4444" />
-        <div>
-          <h4 style={{margin: 0, color: '#ef4444', fontSize: '16px'}}>Alerta de Penalización: Tareas Vencidas</h4>
-          <p style={{margin: '4px 0 0 0', color: '#b91c1c', fontSize: '14px'}}>Tienes 3 tareas de seguimiento con más de 24 horas de retraso. Esto ha impactado negativamente tu "Calidad de Seguimiento IA". Tu posición en el ranking general podría bajar.</p>
-        </div>
-        <button onClick={() => { onNavigate('ai-assistant'); setShowPenalty(false); }} style={{marginLeft: 'auto', background: '#ef4444', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: 600}}>Resolver ahora</button>
-      </div>
-    )}
-
     <div className="glass-card kpi-card">
       <span className="kpi-label">Conversión a Visitas</span>
       <span className="kpi-value">28.4%</span>
@@ -129,22 +95,21 @@ const DashboardView = ({ onNavigate }) => {
     
     <div className="glass-card" style={{gridColumn: 'span 4', minHeight: '350px', display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)', marginTop: 'var(--spacing-lg)'}}>
       <h3 style={{display: 'flex', alignItems: 'center', gap: '8px'}}><Sparkles size={18} color="var(--primary-color)"/> Tareas Sugeridas por IA</h3>
-      
-      <div className="ai-suggestion-box">
+const DashboardView = ({ onNavigate }) => {
+  const [showPenalty, setShowPenalty] = useState(true);
         <strong>Casa Colonial Coyoacán (Estancada)</strong>
         <p>El precio ($9.2M) está un 12% por encima de los comparables. Sugiero ajuste de ACM.</p>
-        <button onClick={() => onNavigate('funnel', 'prop-0')} className="btn btn-primary" style={{marginTop: '8px', padding: '4px 12px'}}>Ver Inmueble</button>
+        <button onClick={() => onNavigate('inventory')} className="btn btn-primary" style={{marginTop: '8px', padding: '4px 12px'}}>Ver Inmueble</button>
       </div>
       
       <div className="ai-suggestion-box" style={{background: 'rgba(245, 158, 11, 0.1)', borderColor: 'rgba(245, 158, 11, 0.3)'}}>
         <strong>Juan Pérez (Inactivo 5 días)</strong>
         <p>Visitó el depa en Polanco. ¿Enviamos tour 3D por WhatsApp para re-enganchar?</p>
-        <button onClick={() => onNavigate('client', 'lead-1')} className="btn btn-secondary" style={{marginTop: '8px', padding: '4px 12px'}}>Ir al Chat</button>
+        <button onClick={() => onNavigate('pipeline')} className="btn btn-secondary" style={{marginTop: '8px', padding: '4px 12px'}}>Ir al Chat</button>
+        <button onClick={() => { onNavigate('crm'); setShowPenalty(false); }} style={{marginLeft: 'auto', background: '#ef4444', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: 600}}>Resolver ahora</button>
       </div>
-    </div>
   </div>
-  );
-};
+);
 
 const PipelineView = () => {
   const [selectedProperty, setSelectedProperty] = useState('prop-0');
@@ -185,15 +150,15 @@ const PipelineView = () => {
     { id: 'visita', label: 'Visitas', icon: Users },
     { id: 'negociacion', label: 'Negociación', icon: CheckCircle2 }
   ];
-
-  const currentLeads = Object.entries(funnel).filter(([_, lead]) => lead.propertyId === selectedProperty);
-
-  return (
-    <div className="pipeline-container animate-fade-in" style={{flexDirection: 'column', height: '100%'}}>
-      <div style={{padding: 'var(--spacing-md) var(--spacing-lg)', background: 'var(--surface-color)', borderBottom: 'var(--glass-border)', display: 'flex', alignItems: 'center', gap: '16px'}}>
+        <button onClick={() => onNavigate('pipeline')} className="btn btn-secondary" style={{marginTop: '8px', padding: '4px 12px'}}>Ir al Chat</button>
+      </div>
+    </div>
+        <button onClick={() => onNavigate('funnel', 'prop-0')} className="btn btn-primary" style={{marginTop: '8px', padding: '4px 12px'}}>Ver Inmueble</button>
+  );
+};
+};
         <span style={{fontWeight: 600, color: 'var(--text-muted)'}}>Embudo de Ventas por Inmueble:</span>
-        <select 
-          value={selectedProperty}
+        <button onClick={() => onNavigate('client', 'lead-1')} className="btn btn-secondary" style={{marginTop: '8px', padding: '4px 12px'}}>Ir al Chat</button>
           onChange={(e) => { setSelectedProperty(e.target.value); setActiveChat(null); }}
           style={{background: 'var(--glass-bg)', color: 'white', border: '1px solid var(--border-color)', padding: '8px 16px', borderRadius: '8px', outline: 'none', fontSize: '1rem', cursor: 'pointer', flex: 1}}
         >
@@ -303,7 +268,235 @@ const PipelineView = () => {
   );
 };
 
+const AddPropertyModal = ({ onClose, onAddProperty }) => {
+  const [price, setPrice] = useState('15000000');
+  const [title, setTitle] = useState('Casa en Jardines del Pedregal');
+  
+  // Fake ACM Analysis
+  const marketAverage = 10500000;
+  const difference = ((Number(price) - marketAverage) / marketAverage) * 100;
+  const isOverpriced = difference > 10;
 
+  const handlePublish = () => {
+    onAddProperty({
+      id: 'prop-custom-' + Date.now(),
+      title,
+      price,
+      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      specs: '3 Rec • 2 Baños • 200m²',
+      badge: 'Nuevo Ingreso',
+      acmStatus: isOverpriced ? 'high' : 'ok',
+      diff: difference,
+      matchCount: Math.floor(Math.random() * 20) + 1
+    });
+    onClose();
+  };
+
+  return (
+    <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px'}}>
+      <div className="glass-card" style={{width: '700px', maxWidth: '100%', background: 'var(--surface-color-solid)', maxHeight: '90vh', overflowY: 'auto'}}>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px'}}>
+          <h2 style={{fontSize: '1.5rem'}}>Agregar Inmueble (Ficha Enriquecida)</h2>
+          <button onClick={onClose} style={{background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer'}}><X size={24} /></button>
+        </div>
+        
+        <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+          <div>
+            <label style={{display: 'block', marginBottom: '8px', color: 'var(--text-secondary)'}}>Título del Inmueble</label>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} style={{width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.2)', color: 'white', outline: 'none'}} />
+          </div>
+          
+          <div style={{display: 'flex', gap: '16px'}}>
+            <div style={{flex: 1}}>
+              <label style={{display: 'block', marginBottom: '8px', color: 'var(--text-secondary)'}}>Precio (MXN)</label>
+              <input 
+                type="number" 
+                value={price} 
+                onChange={(e) => setPrice(e.target.value)}
+                style={{width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.2)', color: 'white', outline: 'none'}} 
+              />
+            </div>
+            <div style={{flex: 1}}>
+              <label style={{display: 'block', marginBottom: '8px', color: 'var(--text-secondary)'}}>Recámaras / Baños</label>
+              <input type="text" defaultValue="3 Rec, 2 Baños" style={{width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.2)', color: 'white', outline: 'none'}} />
+            </div>
+          </div>
+
+          <div style={{display: 'flex', gap: '16px'}}>
+            <div style={{flex: 1}}>
+              <label style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--text-secondary)'}}><Camera size={16}/> Enlace Tour 3D</label>
+              <input type="text" placeholder="https://my.matterport.com/show/?m=..." style={{width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.2)', color: 'white', outline: 'none'}} />
+            </div>
+            <div style={{flex: 1}}>
+              <label style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--text-secondary)'}}><MapPin size={16}/> URL Mapa Interactivo</label>
+              <input type="text" placeholder="Enlace de Google Maps" style={{width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.2)', color: 'white', outline: 'none'}} />
+            </div>
+          </div>
+
+          {/* AI ACM Widget */}
+          <div style={{marginTop: '16px', padding: '16px', borderRadius: '8px', border: isOverpriced ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(16, 185, 129, 0.4)', background: isOverpriced ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)'}}>
+            <h4 style={{display: 'flex', alignItems: 'center', gap: '8px', color: isOverpriced ? '#f87171' : '#34d399', marginBottom: '8px'}}>
+              <Sparkles size={16} /> ACM Automatizado en Tiempo Real
+            </h4>
+            <p style={{fontSize: '0.9rem', color: 'var(--text-primary)'}}>
+              Promedio de mercado para características similares: <strong>$10,500,000 MXN</strong>.
+            </p>
+            {isOverpriced ? (
+              <p style={{fontSize: '0.85rem', marginTop: '8px', color: '#f87171'}}>
+                <AlertTriangle size={14} style={{display: 'inline', verticalAlign: 'middle'}}/> El precio sugerido está un {difference.toFixed(1)}% por encima del mercado.
+              </p>
+            ) : (
+              <p style={{fontSize: '0.85rem', marginTop: '8px', color: '#34d399'}}>
+                <CheckCircle2 size={14} style={{display: 'inline', verticalAlign: 'middle'}}/> El precio es competitivo.
+              </p>
+            )}
+          </div>
+          
+          <div style={{marginTop: '16px'}}>
+            <label style={{display: 'block', marginBottom: '12px', fontWeight: 600}}>Difusión Multiportal (Multiposting)</label>
+            <div style={{display: 'flex', gap: '16px', flexWrap: 'wrap'}}>
+              <label style={{display: 'flex', alignItems: 'center', gap: '8px'}}><input type="checkbox" defaultChecked /> Mercado Libre</label>
+              <label style={{display: 'flex', alignItems: 'center', gap: '8px'}}><input type="checkbox" defaultChecked /> Inmuebles24</label>
+              <label style={{display: 'flex', alignItems: 'center', gap: '8px'}}><input type="checkbox" defaultChecked /> Propiedades.com</label>
+              <label style={{display: 'flex', alignItems: 'center', gap: '8px'}}><input type="checkbox" defaultChecked /> Red MLS Interna</label>
+            </div>
+          </div>
+          
+          <div style={{marginTop: '24px', display: 'flex', justifyContent: 'flex-end', gap: '16px'}}>
+            <button onClick={onClose} className="btn btn-secondary">Cancelar</button>
+            <button onClick={handlePublish} className="btn btn-primary">Publicar Inmueble</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MatchingModal = ({ onClose, matchCount, propertyTitle }) => (
+  <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px'}}>
+    <div className="glass-card animate-fade-in" style={{width: '500px', background: 'var(--surface-color-solid)'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px'}}>
+        <h2 style={{fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px'}}><Sparkles color="var(--primary-color)" /> Resultados Motor Matching</h2>
+        <button onClick={onClose} style={{background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer'}}><X size={24} /></button>
+      </div>
+      <p style={{marginBottom: '16px', color: 'var(--text-secondary)'}}>Hemos analizado nuestra base de datos y la Red MLS. Encontramos <strong>{matchCount} prospectos</strong> con alta afinidad para <em>{propertyTitle}</em>.</p>
+      
+      <div style={{display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '300px', overflowY: 'auto'}}>
+        {Array.from({length: Math.min(matchCount, 8)}).map((_, i) => {
+          const fakeNames = ["Carlos Slim", "Emilio Azcárraga", "María Asunción", "Ricardo Salinas", "Empresa ABC S.A. de C.V.", "Inmobiliaria Global", "Desarrollos XYZ"];
+          const affinity = 99 - (i * 2);
+          return (
+            <div key={i} style={{background: 'var(--surface-color)', padding: '12px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+              <div>
+                <div style={{fontWeight: 600}}>{fakeNames[i % fakeNames.length]}</div>
+                <div style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>Inversión preaprobada</div>
+              </div>
+              <span className="badge badge-success">{affinity}% Afinidad</span>
+            </div>
+          )
+        })}
+        {matchCount > 8 && (
+          <div style={{textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', padding: '8px'}}>
+            + {matchCount - 8} prospectos adicionales
+          </div>
+        )}
+      </div>
+      <button onClick={() => {alert('Notificaciones enviadas a los prospectos compatibles.'); onClose();}} className="btn btn-primary" style={{width: '100%', marginTop: '24px'}}>Notificar a Prospectos (WhatsApp & Email)</button>
+    </div>
+  </div>
+);
+
+const InventoryView = () => {
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showMatchingModal, setShowMatchingModal] = useState(false);
+  const [matchData, setMatchData] = useState({ count: 0, title: '' });
+  
+  const [properties, setProperties] = useState(mockProperties);
+
+  const handleAddProperty = (newProp) => {
+    setProperties([ { ...newProp, stagnant: false }, ...properties ]);
+  };
+
+  const handleOpenMatching = (count, title) => {
+    setMatchData({ count, title });
+    setShowMatchingModal(true);
+  };
+
+  return (
+    <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 var(--spacing-xl) var(--spacing-md)'}}>
+        <div style={{color: 'var(--text-secondary)'}}>
+          Mostrando <strong>{properties.length}</strong> inmuebles en catálogo
+        </div>
+        <button onClick={() => setShowAddModal(true)} className="btn btn-primary">
+          <Plus size={18} /> Nueva Propiedad
+        </button>
+      </div>
+
+      <div className="inventory-grid animate-fade-in" style={{paddingTop: 0}}>
+        {properties.map(prop => (
+          <div key={prop.id} className="glass-card property-card">
+            <div className="property-image" style={{backgroundImage: `url(${prop.image})`}}>
+              <div style={{position: 'absolute', top: 12, right: 12}}>
+                <span className={`badge ${prop.badge === 'Nuevo Ingreso' ? 'badge-info' : (prop.badge === 'Destacada' ? 'badge-warning' : 'badge-success')}`} style={{background: 'rgba(0,0,0,0.7)'}}>{prop.badge}</span>
+              </div>
+            </div>
+            <div className="property-details">
+const MatchingModal = ({ onClose, matchCount, propertyTitle }) => {
+  const [isSending, setIsSending] = useState(false);
+  const [sent, setSent] = useState(false);
+              <div style={{color: 'var(--text-muted)', fontSize: '0.9rem'}}>{prop.specs}</div>
+              
+              {prop.stagnant && (
+                <div className="ai-alert alert-warning" style={{flexDirection: 'column'}}>
+                  <div style={{display: 'flex', gap: '8px'}}>
+                    <AlertTriangle size={16} style={{minWidth: '16px', marginTop: '2px'}} />
+                    <div>
+                      <strong>Alerta de Estancamiento</strong>
+                      <div style={{marginTop: '4px'}}>Bajo volumen de visitas.</div>
+                    </div>
+                  </div>
+                  <button onClick={() => alert('Generando campaña de email marketing y ajuste de precios sugerido...')} className="btn btn-secondary" style={{padding: '4px', fontSize: '0.75rem', marginTop: '8px'}}>Generar Estrategia de IA</button>
+                </div>
+              )}
+
+              {!prop.stagnant && prop.acmStatus === 'ok' && (
+                <div className="ai-alert" style={{background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399'}}>
+                  <CheckCircle2 size={16} style={{minWidth: '16px', marginTop: '2px'}} />
+                  <div>
+                    <strong>ACM Óptimo</strong>
+                    <div style={{marginTop: '4px'}}>Precio muy competitivo para la zona.</div>
+                  </div>
+                </div>
+              )}
+
+              {!prop.stagnant && prop.acmStatus === 'high' && (
+                <div className="ai-alert alert-warning">
+                  <AlertTriangle size={16} style={{minWidth: '16px', marginTop: '2px'}} />
+                  <div>
+                    <strong>Alerta de Precio</strong>
+                    <div style={{marginTop: '4px'}}>El precio está un {prop.diff?.toFixed(1) || 15}% por encima del mercado.</div>
+                  </div>
+                </div>
+              )}
+              
+              <div style={{marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                <button onClick={() => handleOpenMatching(prop.matchCount, prop.title)} className="btn btn-primary" style={{width: '100%'}}><Sparkles size={16} /> Motor Matching ({prop.matchCount})</button>
+                <div style={{display: 'flex', gap: '8px'}}>
+                  <button onClick={() => alert('Propiedad compartida con la Red MLS para split de comisiones. Ahora visible para todos los asesores de la red.')} className="btn btn-secondary" style={{flex: 1, padding: '8px', fontSize: '0.8rem'}}><Share2 size={14}/> Compartir en MLS</button>
+                  <button onClick={() => alert('PDF Flyer interactivo con código QR y branding generado con éxito.')} className="btn btn-secondary" style={{flex: 1, padding: '8px', fontSize: '0.8rem'}}><FileText size={14}/> PDF Flyer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {showAddModal && <AddPropertyModal onClose={() => setShowAddModal(false)} onAddProperty={handleAddProperty} />}
+      {showMatchingModal && <MatchingModal onClose={() => setShowMatchingModal(false)} matchCount={matchData.count} propertyTitle={matchData.title} />}
+    </div>
+  );
+};
 
 const ClientPortalView = () => {
   const [showCalendar, setShowCalendar] = useState(false);
@@ -462,10 +655,9 @@ const ClientPortalView = () => {
                                 <div style={{width: '32px', height: '32px', background: 'rgba(255,255,255,0.9)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
                                   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style={{display: 'block', fill: 'rgba(0,0,0,0.5)', height: '16px', width: '16px', stroke: 'white', strokeWidth: '2'}}><path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path></svg>
                                 </div>
-                                {/* Close Button */}
-                                <div style={{width: '32px', height: '32px', background: 'rgba(255,255,255,0.9)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
-                                  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style={{display: 'block', fill: 'none', height: '12px', width: '12px', stroke: '#222', strokeWidth: '4'}}><path d="m6 6 20 20M26 6 6 26"></path></svg>
-                                </div>
+                  <button className="btn btn-primary" style={{padding: '6px 12px', fontSize: '12px'}} onClick={() => { onNavigate('campaign-manager'); setShowAIStrategyModal(false); }}>Ejecutar Campaña</button>
+                </div>
+              </div>
                               </div>
                               
                               {/* Image Carousel Mock */}
@@ -693,59 +885,6 @@ function App() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [currentEntity, setCurrentEntity] = useState({ type: 'property-list' });
   const [userRole, setUserRole] = useState(null);
-  const [globalSearchTerm, setGlobalSearchTerm] = useState('');
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
-
-  const getSearchResults = () => {
-    if (globalSearchTerm.length < 2) return [];
-    
-    const term = globalSearchTerm.toLowerCase();
-    const results = [];
-    
-    mockProperties.forEach(prop => {
-      const title = prop?.title || '';
-      if (title.toLowerCase().includes(term)) {
-        results.push({ type: 'property', id: prop.id, title: title, subtitle: title, image: prop?.image });
-      }
-    });
-    
-    Object.values(mockFunnelLeads).forEach(lead => {
-      const name = lead?.name || '';
-      const email = lead?.email || '';
-      const phone = lead?.phone || '';
-      if (name.toLowerCase().includes(term) || phone.includes(term) || email.toLowerCase().includes(term)) {
-        results.push({ type: 'client', id: lead.id, title: name, subtitle: email });
-      }
-    });
-    
-    if ('cita'.includes(term) || 'folio'.includes(term)) {
-      results.push({ type: 'calendar', id: 'cal-1', title: 'Cita con prospecto', subtitle: 'Folio: 001' });
-    }
-    
-    return results.slice(0, 6);
-  };
-  
-  const searchResults = getSearchResults();
-
-  const handleGlobalSearch = (result) => {
-    if (result && result.type) {
-       if (result.type === 'calendar') {
-         setCurrentEntity({ type: 'calendar', id: result.id });
-         setCurrentView('appointment-details');
-       } else if (result.type === 'property') {
-         setCurrentEntity({ type: 'funnel', id: result.id });
-         setCurrentView('crm');
-       } else if (result.type === 'client') {
-         setCurrentEntity({ type: 'client', id: result.id });
-         setCurrentView('crm');
-       }
-       setGlobalSearchTerm('');
-       setIsSearchFocused(false);
-    } else if (searchResults.length > 0) {
-       handleGlobalSearch(searchResults[0]);
-    }
-  };
 
   // Simple pseudo-router compatible with GitHub Pages subpaths
   const isAdminRoute = window.location.pathname.includes('/admin') || window.location.hash.includes('#admin');
@@ -760,84 +899,66 @@ function App() {
   }
 
   const renderView = () => {
-    if (userRole === 'admin') {
-      switch (currentView) {
-        case 'admin-dashboard': return <AdminView />;
-        case 'team-directory': return <TeamDirectoryView />;
-        case 'commercial-ops': return <OpsDirectoryView />;
-        case 'admin-crm': return <div style={{padding: '32px'}}><h2>CRM Global (En construcción)</h2></div>;
-        case 'admin-inventory': return <div style={{padding: '32px'}}><h2>Inventario Global (En construcción)</h2></div>;
-        default: return <AdminView />;
-      }
-    }
+    if (userRole === 'admin') return <AdminView />;
     
     switch (currentView) {
-      case 'dashboard': return <DashboardView onNavigate={(view, id) => {
-        if(view === 'pipeline') {
+      case 'dashboard': return <DashboardView onNavigate={(view) => {
+        if(view === 'pipeline' || view === 'inventory') {
           setCurrentView('crm');
           setCurrentEntity({ type: 'property-list' });
-        } else if (view === 'funnel') {
-          setCurrentView('crm');
-          setCurrentEntity({ type: 'funnel', id: id || 'prop-0' });
-        } else if (view === 'client') {
-          setCurrentView('crm');
-          setCurrentEntity({ type: 'client', id: id || 'lead-1' });
-        } else if (view === 'task-resolution') {
-          setCurrentView('task-resolution');
-        } else if (view === 'campaign-manager') {
-          setCurrentView('campaign-manager');
         } else {
           setCurrentView(view);
         }
       }} />;
-      case 'crm': return <AsesorCRM currentEntity={currentEntity} setCurrentEntity={setCurrentEntity} setCurrentView={setCurrentView} />;
-      case 'inventory': return <InventoryView />;
-      case 'academy': return <AcademyView />;
-      case 'client-directory': return <ClientDirectoryView setCurrentView={setCurrentView} currentEntity={currentEntity} setCurrentEntity={setCurrentEntity} />;
-      case 'calendar-sim': return <CalendarSimulationView />;
-      case 'task-resolution': return <TaskResolutionView 
-        onBack={() => setCurrentView('dashboard')}
-        onResolve={(leadId) => {
-          setCurrentEntity({ type: 'client', id: leadId });
-          setCurrentView('crm');
-        }} 
-      />;
-      case 'pdf-viewer': return <PdfViewerView />;
-      case 'pqr-dashboard': return <PqrDashboardView />;
-      case 'email-center': return <EmailCenterView onBack={() => setCurrentView('crm')} />;
-      case 'campaign-manager': return <CampaignManagerView onBack={() => setCurrentView('dashboard')} />;
-      case 'appointment-details': return <AppointmentDetailsView 
-        appointmentId={currentEntity.id} 
-        onNavigate={(view, id) => {
-          if (view === 'client') {
-             setCurrentEntity({ type: 'client', id: id });
-             setCurrentView('crm');
-          } else {
-             setCurrentView(view);
-          }
-        }} 
-        onBack={() => setCurrentView('dashboard')} 
-      />;
-      case 'profile': return <AgentProfileView />;
-      case 'sales-closings': return <SalesClosingsView />;
-      case 'help-center': return <HelpCenterView />;
-      case 'property-promotion': return <PropertyPromotionView />;
-      case 'ai-assistant': return <AiRecommendationsView />;
-      case 'owners-directory': return <OwnersDirectoryView />;
+      case 'crm': return <AsesorCRM currentEntity={currentEntity} setCurrentEntity={setCurrentEntity} />;
       default: return <DashboardView onNavigate={setCurrentView} />;
     }
   };
 
   return (
     <div className="app-container" style={{ zoom: '0.8', width: '125vw', height: '125vh' }}>
-      <Sidebar 
-        userRole={userRole} 
-        currentView={currentView} 
-        setCurrentView={setCurrentView} 
-        currentEntity={currentEntity} 
-        setCurrentEntity={setCurrentEntity} 
-        setUserRole={setUserRole} 
-      />
+      <aside className="sidebar">
+        <div className="sidebar-logo" style={{justifyContent: 'center', padding: 'var(--spacing-xl) 0'}}>
+          <img src="/3r_gris_transparente.png" alt="3R Logo" style={{height: '64px', objectFit: 'contain'}} />
+        </div>
+
+        <nav style={{marginTop: 'var(--spacing-xl)', flex: 1}}>
+          {userRole === 'admin' ? (
+            <div className="nav-item active">
+              <LayoutDashboard size={20} />
+              <span style={{fontWeight: 500}}>Dashboard Global</span>
+            </div>
+          ) : (
+            <>
+              <div className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`} onClick={() => setCurrentView('dashboard')}>
+                <LayoutDashboard size={20} />
+                <span style={{fontWeight: 500}}>Mis Métricas</span>
+              </div>
+              <div className={`nav-item ${currentView === 'crm' && currentEntity.type !== 'calendar' ? 'active' : ''}`} onClick={() => { setCurrentView('crm'); setCurrentEntity({ type: 'property-list' }); }}>
+                <Users size={20} />
+                <span style={{fontWeight: 500}}>CRM & Embudo</span>
+              </div>
+              <div className={`nav-item ${currentView === 'crm' && currentEntity.type === 'calendar' ? 'active' : ''}`} onClick={() => { setCurrentView('crm'); setCurrentEntity({ type: 'calendar' }); }}>
+                <Calendar size={20} />
+                <span style={{fontWeight: 500}}>Agenda General</span>
+              </div>
+            </>
+          )}
+        </nav>
+        
+        <div style={{padding: 'var(--spacing-xl)', borderTop: '1px solid rgba(255,255,255,0.1)'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px'}}>
+            <div style={{width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <UserCircle size={24} color="#94a3b8" />
+            </div>
+            <div>
+              <div style={{fontWeight: 600, color: 'white'}}>{userRole === 'admin' ? 'Administrador' : 'Asesor Premium'}</div>
+              <div style={{fontSize: '0.8rem', color: '#94a3b8'}}>{userRole === 'admin' ? 'Broker / Director' : 'agencia@3rconnect.com'}</div>
+            </div>
+          </div>
+          <button onClick={() => setUserRole(null)} className="btn btn-secondary" style={{width: '100%', fontSize: '0.8rem', padding: '8px', color: '#94a3b8', borderColor: 'rgba(255,255,255,0.1)'}}>Cerrar Sesión</button>
+        </div>
+      </aside>
 
       <main className="main-content">
         <header style={{background: '#0f172a', padding: '12px 0', borderBottom: '1px solid #1e293b'}}>
@@ -846,39 +967,12 @@ function App() {
               <div style={{flex: 1, position: 'relative', maxWidth: '600px'}}>
                 <input 
                   type="text" 
-                  value={globalSearchTerm}
-                  onChange={(e) => setGlobalSearchTerm(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleGlobalSearch()}
-                  onFocus={() => setIsSearchFocused(true)}
-                  onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
                   placeholder="Busca clientes, folios de citas, inmuebles..." 
                   style={{width: '100%', padding: '10px 16px', borderRadius: '4px', border: 'none', outline: 'none', boxShadow: '0 1px 2px 0 rgba(0,0,0,.2)'}}
                 />
-                <button onClick={() => handleGlobalSearch()} style={{position: 'absolute', right: 0, top: 0, bottom: 0, background: 'white', border: 'none', borderLeft: '1px solid #e6e6e6', padding: '0 12px', cursor: 'pointer', borderTopRightRadius: '4px', borderBottomRightRadius: '4px'}}>
+                <button style={{position: 'absolute', right: 0, top: 0, bottom: 0, background: 'white', border: 'none', borderLeft: '1px solid #e6e6e6', padding: '0 12px', cursor: 'pointer', borderTopRightRadius: '4px', borderBottomRightRadius: '4px'}}>
                   <Search size={18} color="#666"/>
                 </button>
-                
-                {isSearchFocused && globalSearchTerm.length >= 2 && (
-                  <div style={{position: 'absolute', top: '100%', left: 0, right: 0, background: 'white', borderRadius: '4px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)', zIndex: 50, marginTop: '4px', border: '1px solid #e2e8f0', overflow: 'hidden'}}>
-                    {searchResults.length > 0 ? searchResults.map((res, i) => (
-                      <div key={i} onMouseDown={(e) => { e.preventDefault(); handleGlobalSearch(res); }} style={{padding: '12px 16px', borderBottom: '1px solid #f1f5f9', cursor: 'pointer', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '12px'}}>
-                        <div style={{width: '40px', height: '40px', borderRadius: res.type === 'property' ? '4px' : '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0}}>
-                          {res.image ? (
-                            <img src={res.image} alt={res.title} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-                          ) : (
-                            res.type === 'client' ? <UserCircle size={20} color="#64748b" /> : <Calendar size={20} color="#64748b" />
-                          )}
-                        </div>
-                        <div style={{display: 'flex', flexDirection: 'column'}}>
-                          <span style={{fontWeight: 600, fontSize: '0.9rem'}}>{res.title}</span>
-                          <span style={{fontSize: '0.75rem', color: '#64748b'}}>{res.type === 'client' ? 'Cliente' : res.type === 'property' ? 'Inmueble' : 'Agenda'} • {res.subtitle}</span>
-                        </div>
-                      </div>
-                    )) : (
-                      <div style={{padding: '12px 16px', color: '#64748b', fontSize: '0.9rem'}}>No se encontraron resultados</div>
-                    )}
-                  </div>
-                )}
               </div>
               
               <div style={{display: 'flex', alignItems: 'center', gap: '24px', color: 'white', fontSize: '14px'}}>
@@ -911,96 +1005,17 @@ function App() {
                 </div>
               </div>
               
+              <div style={{display: 'flex', gap: '24px', alignItems: 'center'}}>
+                <span style={{cursor: 'pointer', transition: 'color .2s'}} onMouseOver={(e)=>e.target.style.color='white'} onMouseOut={(e)=>e.target.style.color='#94a3b8'}>Inmuebles Captados</span>
+                <span style={{cursor: 'pointer', transition: 'color .2s'}} onMouseOver={(e)=>e.target.style.color='white'} onMouseOut={(e)=>e.target.style.color='#94a3b8'}>Clientes Activos</span>
+                <span style={{cursor: 'pointer', transition: 'color .2s'}} onMouseOver={(e)=>e.target.style.color='white'} onMouseOut={(e)=>e.target.style.color='#94a3b8'}>Cierres del Mes</span>
+                <span style={{cursor: 'pointer', transition: 'color .2s'}} onMouseOver={(e)=>e.target.style.color='white'} onMouseOut={(e)=>e.target.style.color='#94a3b8'}>Ayuda / Soporte Asesores</span>
+              </div>
+              
               <div style={{display: 'flex', gap: '16px', alignItems: 'center', color: 'white'}}>
-                <button style={{background: 'none', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center'}} onClick={() => alert('Notificaciones...')}>
-                  <Bell size={20} />
-                </button>
-                <div style={{position: 'relative'}}>
-                  <button 
-                    onClick={() => setShowProfileMenu(!showProfileMenu)}
-                    style={{
-                      width: '36px', height: '36px', borderRadius: '50%', background: '#3b82f6', color: 'white', border: '2px solid transparent', 
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer',
-                      transition: 'border 0.2s'
-                    }}
-                    onMouseOver={e=>e.currentTarget.style.border='2px solid rgba(255,255,255,0.5)'}
-                    onMouseOut={e=>e.currentTarget.style.border='2px solid transparent'}
-                  >
-                    L
-                  </button>
-
-                  {/* Profile Dropdown Menu */}
-                  {showProfileMenu && (
-                    <>
-                      {/* Invisible overlay to close dropdown when clicking outside */}
-                      <div style={{position: 'fixed', inset: 0, zIndex: 99}} onClick={() => setShowProfileMenu(false)}></div>
-                      
-                      <div style={{
-                        position: 'absolute', top: '100%', right: '0', marginTop: '12px', width: '320px', background: 'white', 
-                        borderRadius: '16px', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.3)', zIndex: 100, overflow: 'hidden',
-                        border: '1px solid #e2e8f0', color: '#0f172a'
-                      }}>
-                        {/* Google style bubble */}
-                        <div style={{padding: '24px 20px', display: 'flex', gap: '16px', alignItems: 'center', borderBottom: '1px solid #e2e8f0'}}>
-                          <div style={{width: '56px', height: '56px', borderRadius: '50%', background: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: 'bold'}}>
-                            L
-                          </div>
-                          <div>
-                            <div style={{fontWeight: 600, fontSize: '16px'}}>Luis Morales</div>
-                            <div style={{fontSize: '13px', color: '#64748b'}}>luis.morales@3rconnect.com</div>
-                            <div style={{fontSize: '12px', background: '#f1f5f9', color: '#475569', padding: '2px 8px', borderRadius: '12px', display: 'inline-block', marginTop: '4px', fontWeight: 600}}>
-                              Asesor Premium
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Administrar tu cuenta */}
-                        <div style={{padding: '12px', borderBottom: '1px solid #e2e8f0'}}>
-                          <button 
-                            onClick={() => { setShowProfileMenu(false); setCurrentView('profile'); }}
-                            style={{width: '100%', padding: '10px', background: 'white', border: '1px solid #cbd5e1', borderRadius: '24px', fontSize: '14px', fontWeight: 500, color: '#334155', cursor: 'pointer', transition: 'background 0.2s'}}
-                            onMouseOver={e=>e.currentTarget.style.background='#f8fafc'} onMouseOut={e=>e.currentTarget.style.background='white'}
-                          >
-                            Administrar tu Cuenta
-                          </button>
-                        </div>
-
-                        {/* Menu Options */}
-                        <div style={{padding: '8px 0'}}>
-                          {[
-                            { icon: Home, label: 'Inmuebles Captados', action: () => { setCurrentView('crm'); setCurrentEntity({ type: 'property-list' }); } },
-                            { icon: Users, label: 'Clientes Activos', action: () => setCurrentView('client-directory') },
-                            { icon: TrendingUp, label: 'Cierres del Mes', action: () => setCurrentView('sales-closings') },
-                            { icon: Settings, label: 'Ayuda / Soporte Asesores', action: () => setCurrentView('help-center') }
-                          ].map((item, i) => (
-                            <div 
-                              key={i}
-                              onClick={() => { setShowProfileMenu(false); item.action(); }}
-                              style={{padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px', color: '#334155'}}
-                              onMouseOver={e=>e.currentTarget.style.background='#f1f5f9'} onMouseOut={e=>e.currentTarget.style.background='transparent'}
-                            >
-                              <item.icon size={18} color="#64748b" />
-                              {item.label}
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Cerrar Sesion */}
-                        <div style={{padding: '12px 0', borderTop: '1px solid #e2e8f0'}}>
-                          <div 
-                            onClick={() => { setShowProfileMenu(false); setUserRole(null); }}
-                            style={{padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px', color: '#334155'}}
-                            onMouseOver={e=>e.currentTarget.style.background='#f1f5f9'} onMouseOut={e=>e.currentTarget.style.background='transparent'}
-                          >
-                            <UserCircle size={18} color="#64748b" />
-                            Salir de la cuenta
-                          </div>
-                        </div>
-
-                      </div>
-                    </>
-                  )}
-                </div>
+                <span style={{cursor: 'pointer'}} onClick={() => setUserRole(null)}>Cerrar Sesión</span>
+                <span style={{cursor: 'pointer'}}>Mi Perfil</span>
+                <span style={{cursor: 'pointer'}}>Notificaciones</span>
               </div>
             </div>
           </div>
@@ -1015,3 +1030,52 @@ function App() {
 }
 
 export default App;
+      {/* Report Modal */}
+      {showReportModal && (
+        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <div className="glass-card animate-fade-in" style={{width: '400px', background: 'white', display: 'flex', flexDirection: 'column'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px'}}>
+              <h3 style={{margin: 0, fontSize: '18px', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '8px'}}><ShieldAlert size={20}/> Reportar Problema</h3>
+              <button onClick={() => setShowReportModal(false)} style={{background: 'none', border: 'none', color: '#999', cursor: 'pointer'}}><X size={20}/></button>
+            </div>
+            <p style={{fontSize: '14px', color: '#666', marginBottom: '16px'}}>Por favor descríbenos el problema con este anuncio o asesor. Tu reporte es confidencial.</p>
+            <textarea placeholder="Detalles del problema..." style={{width: '100%', minHeight: '100px', padding: '12px', borderRadius: '4px', border: '1px solid #ddd', marginBottom: '16px', outline: 'none', resize: 'none'}}></textarea>
+            <button onClick={() => { showToast('Reporte enviado a moderación. Gracias.', 'success'); setShowReportModal(false); }} className="btn btn-primary" style={{background: '#ef4444'}}>Enviar Reporte</button>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+  );
+};
+
+const LoginView = ({ onLogin }) => (
+              <div style={{display: 'flex', gap: '24px', alignItems: 'center'}}>
+                <span onClick={() => setCurrentView('inventory')} style={{cursor: 'pointer', transition: 'color .2s'}} onMouseOver={(e)=>e.target.style.color='white'} onMouseOut={(e)=>e.target.style.color='#94a3b8'}>Inmuebles Captados</span>
+                <span onClick={() => setCurrentView('crm')} style={{cursor: 'pointer', transition: 'color .2s'}} onMouseOver={(e)=>e.target.style.color='white'} onMouseOut={(e)=>e.target.style.color='#94a3b8'}>Clientes Activos</span>
+                <span onClick={() => showToast('Abriendo Cierres del Mes...')} style={{cursor: 'pointer', transition: 'color .2s'}} onMouseOver={(e)=>e.target.style.color='white'} onMouseOut={(e)=>e.target.style.color='#94a3b8'}>Cierres del Mes</span>
+      case 'inventory': return <AsesorCRM currentEntity={{type: 'property-list'}} setCurrentEntity={setCurrentEntity} setCurrentView={setCurrentView} />;
+      case 'crm': return <AsesorCRM currentEntity={currentEntity} setCurrentEntity={setCurrentEntity} setCurrentView={setCurrentView} />;
+      case 'academy': return <AcademyView />;
+        onResolve={(leadId) => {
+          setCurrentEntity({ type: 'client', id: leadId });
+          setCurrentView('crm');
+        }} 
+      case 'dashboard': return <DashboardView onNavigate={(view, id) => {
+        if(view === 'pipeline' || view === 'inventory') {
+          setCurrentView('crm');
+          setCurrentEntity({ type: 'property-list' });
+        } else if (view === 'funnel') {
+          setCurrentView('crm');
+          setCurrentEntity({ type: 'funnel', id: id || 'prop-0' });
+        } else {
+          setCurrentView(view);
+        }
+      }} />;
+        } else if (view === 'funnel') {
+          setCurrentView('crm');
+          setCurrentEntity({ type: 'funnel', id: id || 'prop-0' });
+        } else if (view === 'client') {
+          setCurrentView('crm');
+          setCurrentEntity({ type: 'client', id: id || 'lead-1' });
+        } else {
