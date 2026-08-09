@@ -24,6 +24,14 @@ import {
   ArrowRight,
   Search,
   Settings,
+  LogOut,
+  ChevronDown,
+  Phone,
+  BarChart3,
+  Rocket,
+  Target,
+  Activity,
+  Megaphone,
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -53,6 +61,8 @@ const createPriceIcon = (price) => {
 };
 
 import { AsesorCRM } from './AsesorCRM';
+import AdminCRMView from './components/pages/AdminCRMView';
+import AdminInventoryView from './components/pages/AdminInventoryView';
 import { chartData, mockProperties, mockFunnelLeads, zones, propTypes, images, names, stages } from './mockData';
 
 import Sidebar from './components/globals/Sidebar';
@@ -625,40 +635,160 @@ const ClientPortalView = () => {
 };
 
 const AdminView = () => (
-  <div className="dashboard-grid animate-fade-in">
-    <div className="glass-card kpi-card">
-      <span className="kpi-label">Facturación Global (Mes)</span>
-      <span className="kpi-value">$2.4M</span>
-      <span className="kpi-trend trend-up"><TrendingUp size={16} /> +12% vs mes pasado</span>
+  <div className="dashboard-grid animate-fade-in" style={{gap: '24px'}}>
+    
+    {/* Header / Title */}
+    <div style={{gridColumn: 'span 12', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px'}}>
+      <div>
+        <h2 style={{fontSize: '24px', color: '#0f172a', margin: '0 0 4px 0', display: 'flex', alignItems: 'center', gap: '8px'}}>
+          <Activity size={28} color="#2563eb" /> Centro de Mando Global
+        </h2>
+        <p style={{margin: 0, color: '#64748b', fontSize: '15px'}}>Monitorea el rendimiento de tu agencia impulsado por Inteligencia Artificial.</p>
+      </div>
+      <div style={{background: '#f1f5f9', padding: '8px 16px', borderRadius: '20px', fontSize: '13px', fontWeight: 600, color: '#475569', display: 'flex', alignItems: 'center', gap: '8px'}}>
+        <div style={{width: '8px', height: '8px', borderRadius: '50%', background: '#10b981'}}></div>
+        Sistema Operativo Normal
+      </div>
     </div>
-    <div className="glass-card kpi-card">
-      <span className="kpi-label">Inmuebles Activos</span>
-      <span className="kpi-value">540</span>
-      <span className="kpi-trend trend-up"><Home size={16} /> +15 nuevos hoy</span>
+
+    {/* AI Super KPIs */}
+    <div className="glass-card" style={{gridColumn: 'span 3', background: 'linear-gradient(135deg, #1e293b, #0f172a)', color: 'white', border: 'none', position: 'relative', overflow: 'hidden'}}>
+      <div style={{position: 'absolute', top: '-20px', right: '-20px', opacity: 0.1}}><TrendingUp size={120} /></div>
+      <span style={{fontSize: '13px', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Facturación (Mes)</span>
+      <div style={{fontSize: '36px', fontWeight: 700, margin: '8px 0', color: 'white'}}>$2.4M</div>
+      <span style={{fontSize: '13px', color: '#34d399', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600}}><TrendingUp size={16} /> +12% vs mes pasado</span>
     </div>
-    <div className="glass-card kpi-card">
-      <span className="kpi-label">Asesores Activos</span>
-      <span className="kpi-value">32</span>
-      <span className="kpi-trend trend-up"><Users size={16} /> 100% de retención</span>
+
+    <div className="glass-card" style={{gridColumn: 'span 3', borderTop: '4px solid #8b5cf6', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+        <span style={{fontSize: '13px', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Ahorro de Tiempo IA</span>
+        <div style={{background: '#f3e8ff', padding: '6px', borderRadius: '8px'}}><Clock size={18} color="#8b5cf6" /></div>
+      </div>
+      <div style={{fontSize: '32px', fontWeight: 700, margin: '8px 0', color: '#0f172a'}}>120h</div>
+      <span style={{fontSize: '13px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600}}><TrendingUp size={16} /> 4h promedio por asesor</span>
+    </div>
+
+    <div className="glass-card" style={{gridColumn: 'span 3', borderTop: '4px solid #f59e0b', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+        <span style={{fontSize: '13px', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Leads por Promoción IA</span>
+        <div style={{background: '#fef3c7', padding: '6px', borderRadius: '8px'}}><Rocket size={18} color="#f59e0b" /></div>
+      </div>
+      <div style={{fontSize: '32px', fontWeight: 700, margin: '8px 0', color: '#0f172a'}}>+450</div>
+      <span style={{fontSize: '13px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600}}><TrendingUp size={16} /> Campañas auto-generadas</span>
+    </div>
+
+    <div className="glass-card" style={{gridColumn: 'span 3', borderTop: '4px solid #3b82f6', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+        <span style={{fontSize: '13px', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Matches (Cierre Rápido)</span>
+        <div style={{background: '#dbeafe', padding: '6px', borderRadius: '8px'}}><Target size={18} color="#3b82f6" /></div>
+      </div>
+      <div style={{fontSize: '32px', fontWeight: 700, margin: '8px 0', color: '#0f172a'}}>18%</div>
+      <span style={{fontSize: '13px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600}}><TrendingUp size={16} /> Aumento en prop. directas</span>
     </div>
     
-    <div className="glass-card" style={{gridColumn: 'span 12', marginTop: 'var(--spacing-lg)'}}>
-      <h3>Ranking de Asesores (Top 3)</h3>
-      <div style={{display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px'}}>
-        <div style={{background: 'var(--surface-color)', padding: '16px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <div><strong>1. Laura Martínez</strong><div style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>12 cierres este mes</div></div>
-          <span className="badge badge-success" style={{fontSize: '1rem'}}>$450k Comisiones</span>
+    {/* Lower Section Grid */}
+    <div style={{gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '24px'}}>
+      
+      {/* Activity Stream */}
+      <div className="glass-card" style={{flex: 1}}>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px'}}>
+          <h3 style={{margin: 0, fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={20} color="#eab308" /> Actividad IA Reciente</h3>
+          <button style={{background: 'transparent', border: 'none', color: '#3b82f6', fontWeight: 600, cursor: 'pointer', fontSize: '13px'}}>Ver todo el registro</button>
         </div>
-        <div style={{background: 'var(--surface-color)', padding: '16px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <div><strong>2. Carlos Ruiz</strong><div style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>8 cierres este mes</div></div>
-          <span className="badge badge-success" style={{fontSize: '1rem'}}>$310k Comisiones</span>
-        </div>
-        <div style={{background: 'var(--surface-color)', padding: '16px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <div><strong>3. Asesor Premium (Tú)</strong><div style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>5 cierres este mes</div></div>
-          <span className="badge badge-info" style={{fontSize: '1rem'}}>$180k Comisiones</span>
+        
+        <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+          <div style={{display: 'flex', gap: '16px', padding: '12px', background: '#f8fafc', borderRadius: '8px', borderLeft: '4px solid #8b5cf6'}}>
+            <div style={{width: '40px', height: '40px', borderRadius: '50%', background: '#f3e8ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <Calendar size={18} color="#8b5cf6" />
+            </div>
+            <div>
+              <div style={{fontSize: '14px', fontWeight: 600, color: '#0f172a'}}>Agenda Optimizada Automáticamente</div>
+              <div style={{fontSize: '13px', color: '#475569', marginTop: '4px'}}>La IA de Carlos Ruiz reacomodó 3 reuniones (Ahorro est. 1.5h de traslado).</div>
+              <div style={{fontSize: '11px', color: '#94a3b8', marginTop: '6px'}}>Hace 5 min</div>
+            </div>
+          </div>
+
+          <div style={{display: 'flex', gap: '16px', padding: '12px', background: '#f8fafc', borderRadius: '8px', borderLeft: '4px solid #3b82f6'}}>
+            <div style={{width: '40px', height: '40px', borderRadius: '50%', background: '#dbeafe', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <Send size={18} color="#3b82f6" />
+            </div>
+            <div>
+              <div style={{fontSize: '14px', fontWeight: 600, color: '#0f172a'}}>Propuesta Masiva Enviada (Match 98%)</div>
+              <div style={{fontSize: '13px', color: '#475569', marginTop: '4px'}}>Asesor Premium envió mensaje sugerido por IA a 3 clientes potenciales para 'Casa en Coyoacán'.</div>
+              <div style={{fontSize: '11px', color: '#94a3b8', marginTop: '6px'}}>Hace 12 min</div>
+            </div>
+          </div>
+
+          <div style={{display: 'flex', gap: '16px', padding: '12px', background: '#f8fafc', borderRadius: '8px', borderLeft: '4px solid #f59e0b'}}>
+            <div style={{width: '40px', height: '40px', borderRadius: '50%', background: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <Megaphone size={18} color="#f59e0b" />
+            </div>
+            <div>
+              <div style={{fontSize: '14px', fontWeight: 600, color: '#0f172a'}}>Campaña de Ads Activada</div>
+              <div style={{fontSize: '13px', color: '#475569', marginTop: '4px'}}>Laura Martínez aprobó el copy generado por IA para 'Depto Lujo en Polanco' (FB & IG).</div>
+              <div style={{fontSize: '11px', color: '#94a3b8', marginTop: '6px'}}>Hace 25 min</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    {/* Agents Ranking */}
+    <div className="glass-card" style={{gridColumn: 'span 4', display: 'flex', flexDirection: 'column'}}>
+      <h3 style={{margin: '0 0 20px 0', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px'}}>
+        <Users size={20} color="#10b981" /> 
+        Top Asesores (Uso de IA)
+      </h3>
+      
+      <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+        <div style={{background: 'linear-gradient(to right, #f8fafc, #ffffff)', border: '1px solid #e2e8f0', padding: '16px', borderRadius: '12px', position: 'relative', overflow: 'hidden'}}>
+          <div style={{position: 'absolute', top: 0, left: 0, bottom: 0, width: '4px', background: '#10b981'}}></div>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+              <div style={{width: '32px', height: '32px', borderRadius: '50%', background: '#cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'white'}}>1</div>
+              <strong style={{fontSize: '15px', color: '#0f172a'}}>Laura Martínez</strong>
+            </div>
+            <span style={{fontSize: '14px', fontWeight: 700, color: '#10b981'}}>$450k</span>
+          </div>
+          <div style={{display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#64748b'}}>
+            <Sparkles size={12} color="#8b5cf6" /> 95% adopción de IA (Nivel Experto)
+          </div>
+        </div>
+
+        <div style={{background: 'linear-gradient(to right, #f8fafc, #ffffff)', border: '1px solid #e2e8f0', padding: '16px', borderRadius: '12px', position: 'relative', overflow: 'hidden'}}>
+          <div style={{position: 'absolute', top: 0, left: 0, bottom: 0, width: '4px', background: '#3b82f6'}}></div>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+              <div style={{width: '32px', height: '32px', borderRadius: '50%', background: '#cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'white'}}>2</div>
+              <strong style={{fontSize: '15px', color: '#0f172a'}}>Carlos Ruiz</strong>
+            </div>
+            <span style={{fontSize: '14px', fontWeight: 700, color: '#3b82f6'}}>$310k</span>
+          </div>
+          <div style={{display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#64748b'}}>
+            <Sparkles size={12} color="#8b5cf6" /> 82% adopción de IA (Nivel Avanzado)
+          </div>
+        </div>
+
+        <div style={{background: 'linear-gradient(to right, #f8fafc, #ffffff)', border: '1px solid #8b5cf6', padding: '16px', borderRadius: '12px', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 12px rgba(139, 92, 246, 0.1)'}}>
+          <div style={{position: 'absolute', top: 0, left: 0, bottom: 0, width: '4px', background: '#8b5cf6'}}></div>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+              <div style={{width: '32px', height: '32px', borderRadius: '50%', background: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'white'}}>3</div>
+              <strong style={{fontSize: '15px', color: '#0f172a'}}>Asesor Premium (Tú)</strong>
+            </div>
+            <span style={{fontSize: '14px', fontWeight: 700, color: '#8b5cf6'}}>$180k</span>
+          </div>
+          <div style={{display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#64748b'}}>
+            <Sparkles size={12} color="#8b5cf6" /> 100% adopción (Pionero IA)
+          </div>
+        </div>
+        
+        <button style={{width: '100%', padding: '12px', borderRadius: '8px', border: '1px dashed #cbd5e1', background: 'transparent', color: '#64748b', fontWeight: 600, cursor: 'pointer', marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'}}>
+          <BarChart3 size={16} /> Ver reporte completo
+        </button>
+      </div>
+    </div>
+    
   </div>
 );
 
@@ -765,8 +895,8 @@ function App() {
         case 'admin-dashboard': return <AdminView />;
         case 'team-directory': return <TeamDirectoryView />;
         case 'commercial-ops': return <OpsDirectoryView />;
-        case 'admin-crm': return <div style={{padding: '32px'}}><h2>CRM Global (En construcción)</h2></div>;
-        case 'admin-inventory': return <div style={{padding: '32px'}}><h2>Inventario Global (En construcción)</h2></div>;
+        case 'admin-crm': return <AdminCRMView />;
+        case 'admin-inventory': return <AdminInventoryView />;
         default: return <AdminView />;
       }
     }

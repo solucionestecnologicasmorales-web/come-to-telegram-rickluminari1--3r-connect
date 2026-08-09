@@ -27,7 +27,7 @@ export const mockProperties = Array.from({length: 50}).map((_, i) => {
   return {
     id: `prop-${i}`,
     title: `${type} en ${zone}`,
-    price: (Math.floor(Math.random() * 200) * 100000 + 2000000).toString(),
+    price: new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(Math.floor(Math.random() * 200) * 100000 + 2000000),
     image: images[Math.floor(Math.random() * images.length)],
     specs: `${Math.floor(Math.random() * 4) + 1} Rec • ${Math.floor(Math.random() * 3) + 1} Baños • ${Math.floor(Math.random() * 300) + 50}m²`,
     badge: Math.random() > 0.7 ? 'Nuevo Ingreso' : (Math.random() > 0.5 ? 'Destacada' : 'Activa'),
