@@ -32,6 +32,7 @@ import {
   Target,
   Activity,
   Megaphone,
+  Box,
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -322,6 +323,7 @@ const ClientPortalView = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'map'
+  const [is3DMode, setIs3DMode] = useState(false);
 
   const handleSearch = () => {
     if(!searchTerm) return;
@@ -334,11 +336,12 @@ const ClientPortalView = () => {
 
   const renderPropertyCard = (prop, affinity) => {
     const isDiscount = Math.random() > 0.5;
-    const oldPrice = Number(prop.price) * 1.15;
+    const numericPrice = Number(String(prop.price).replace(/[^0-9.-]+/g, ""));
+    const oldPrice = numericPrice * 1.15;
     return (
-      <div key={prop.id} onClick={() => { setSelectedProperty(prop); setCurrentImgIndex(0); }} className="animate-fade-in" style={{background: 'white', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 1px 2px 0 rgba(0,0,0,.12)', display: 'flex', flexDirection: 'column', cursor: 'pointer', transition: 'box-shadow .2s ease-out', borderBottom: '1px solid #e6e6e6'}}>
-        <div style={{position: 'relative'}}>
-          <img src={prop.image} alt="Property" style={{width: '100%', height: '224px', objectFit: 'cover'}} />
+      <div key={prop.id} onClick={() => { setSelectedProperty(prop); setCurrentImgIndex(0); setIs3DMode(false); }} className="animate-fade-in" style={{background: 'white', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 1px 2px 0 rgba(0,0,0,.12)', display: 'flex', flexDirection: 'column', cursor: 'pointer', transition: 'box-shadow .2s ease-out', borderBottom: '1px solid #e6e6e6'}}>
+        <div style={{position: 'relative', background: '#f8fafc'}}>
+          <img src={prop.image || '/3r_gris_transparente.png'} alt="Property" style={{width: '100%', height: '224px', objectFit: prop.image ? 'cover' : 'contain', padding: prop.image ? '0' : '24px'}} onError={(e) => { e.target.onerror = null; e.target.src = '/3r_gris_transparente.png'; e.target.style.objectFit = 'contain'; e.target.style.padding = '24px'; }} />
           <div style={{position: 'absolute', top: 12, right: 12, background: 'rgba(0,0,0,0.5)', color: 'white', padding: '6px', borderRadius: '50%'}}>
              <Sparkles size={14} />
           </div>
@@ -346,7 +349,7 @@ const ClientPortalView = () => {
         <div style={{padding: '16px', flex: 1, display: 'flex', flexDirection: 'column'}}>
           {isDiscount && <div style={{fontSize: '0.85rem', color: '#999', textDecoration: 'line-through'}}>${(oldPrice/1000000).toFixed(1)}M</div>}
           <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px'}}>
-            <div style={{fontSize: '1.5rem', fontWeight: 400, color: '#333'}}>${(Number(prop.price)/1000000).toFixed(1)}M</div>
+            <div style={{fontSize: '1.5rem', fontWeight: 400, color: '#333'}}>${(numericPrice/1000000).toFixed(1)}M</div>
             {isDiscount && <span style={{color: '#00a650', fontSize: '0.85rem'}}>15% OFF</span>}
           </div>
           
@@ -463,10 +466,12 @@ const ClientPortalView = () => {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       />
-                      {[...recommendedProps, ...similarProps].map((prop) => (
+                      {[...recommendedProps, ...similarProps].map((prop) => {
+                        const numericPrice = Number(String(prop.price).replace(/[^0-9.-]+/g, ""));
+                        return (
                         <Marker key={prop.id} position={[prop.lat, prop.lng]} icon={createPriceIcon(prop.price)}>
                           <Popup className="custom-airbnb-popup">
-                            <div style={{position: 'relative', cursor: 'pointer', background: 'white'}} onClick={() => setSelectedProperty(prop)}>
+                            <div style={{position: 'relative', cursor: 'pointer', background: 'white'}} onClick={() => { setSelectedProperty(prop); setIs3DMode(false); }}>
                               {/* Top Action Buttons */}
                               <div style={{position: 'absolute', top: '12px', right: '12px', display: 'flex', gap: '8px', zIndex: 10}}>
                                 <div style={{width: '32px', height: '32px', background: 'rgba(255,255,255,0.9)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
@@ -479,8 +484,8 @@ const ClientPortalView = () => {
                               </div>
                               
                               {/* Image Carousel Mock */}
-                              <div style={{position: 'relative'}}>
-                                <img src={prop.image} style={{width: '100%', height: '220px', objectFit: 'cover', display: 'block'}} />
+                              <div style={{position: 'relative', background: '#f8fafc'}}>
+                                <img src={prop.image || '/3r_gris_transparente.png'} style={{width: '100%', height: '220px', objectFit: prop.image ? 'cover' : 'contain', padding: prop.image ? '0' : '24px', display: 'block'}} onError={(e) => { e.target.onerror = null; e.target.src = '/3r_gris_transparente.png'; e.target.style.objectFit = 'contain'; e.target.style.padding = '24px'; }} />
                                 <div style={{position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '28px', height: '28px', background: 'rgba(255,255,255,0.9)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', zIndex: 10}}>
                                   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style={{display: 'block', fill: 'none', height: '12px', width: '12px', stroke: '#222', strokeWidth: '4'}}><path d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path></svg>
                                 </div>
@@ -503,7 +508,7 @@ const ClientPortalView = () => {
                                 <div style={{color: '#717171', fontSize: '15px', marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{prop.specs}</div>
                                 <div style={{color: '#717171', fontSize: '15px', marginBottom: '8px'}}>Disponibilidad Inmediata</div>
                                 <div style={{fontSize: '15px', color: '#222', marginBottom: '8px'}}>
-                                  <span style={{fontWeight: 600}}>${(Number(prop.price)/1000000).toFixed(1)}M COP</span>
+                                  <span style={{fontWeight: 600}}>${(numericPrice/1000000).toFixed(1)}M COP</span>
                                 </div>
                                 <div style={{display: 'inline-block', background: '#e6f4ea', color: '#00a650', fontSize: '12px', fontWeight: 600, padding: '4px 8px', borderRadius: '4px'}}>
                                   Visita guiada GRATIS
@@ -512,7 +517,7 @@ const ClientPortalView = () => {
                             </div>
                           </Popup>
                         </Marker>
-                      ))}
+                      )})}
                     </MapContainer>
                   </div>
                 </div>
@@ -528,15 +533,31 @@ const ClientPortalView = () => {
           <div className="animate-fade-in" style={{width: '1000px', maxWidth: '100%', maxHeight: '90vh', background: 'white', borderRadius: '4px', overflow: 'hidden', display: 'flex', flexDirection: 'column'}}>
             
             <div style={{position: 'relative', height: '400px', background: '#f5f5f5', flexShrink: 0, display: 'flex', justifyContent: 'center'}}>
-              <img 
-                src={[selectedProperty.image, images[(images.indexOf(selectedProperty.image) + 1) % images.length], images[(images.indexOf(selectedProperty.image) + 2) % images.length]][currentImgIndex]} 
-                alt="Property Gallery" 
-                style={{height: '100%', objectFit: 'contain', boxShadow: '0 0 15px rgba(0,0,0,0.1)'}} 
-              />
+              {is3DMode ? (
+                <iframe src="https://my.matterport.com/show/?m=U7RSqFFpMU8" width="100%" height="100%" style={{border: 'none'}} allowFullScreen title="Recorrido 3D" />
+              ) : (
+                <img 
+                  src={[selectedProperty.image, images[(images.indexOf(selectedProperty.image) + 1) % images.length], images[(images.indexOf(selectedProperty.image) + 2) % images.length]][currentImgIndex] || '/3r_gris_transparente.png'} 
+                  alt="Property Gallery" 
+                  style={{height: '100%', width: '100%', objectFit: 'contain', padding: '24px', boxShadow: '0 0 15px rgba(0,0,0,0.1)'}} 
+                  onError={(e) => { e.target.onerror = null; e.target.src = '/3r_gris_transparente.png'; e.target.style.objectFit = 'contain'; e.target.style.padding = '40px'; }}
+                />
+              )}
               <button onClick={() => setSelectedProperty(null)} style={{position: 'absolute', top: 16, right: 16, background: 'rgba(0,0,0,0.1)', color: '#333', border: 'none', borderRadius: '50%', padding: '8px', cursor: 'pointer', zIndex: 10}}><X size={24}/></button>
               
-              <button onClick={() => setCurrentImgIndex((prev) => (prev - 1 + 3) % 3)} style={{position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', background: 'white', color: '#3483fa', border: 'none', borderRadius: '50%', width: '48px', height: '48px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', cursor: 'pointer', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>‹</button>
-              <button onClick={() => setCurrentImgIndex((prev) => (prev + 1) % 3)} style={{position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', background: 'white', color: '#3483fa', border: 'none', borderRadius: '50%', width: '48px', height: '48px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', cursor: 'pointer', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>›</button>
+              {!is3DMode && (
+                <>
+                  <button onClick={() => setCurrentImgIndex((prev) => (prev - 1 + 3) % 3)} style={{position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', background: 'white', color: '#3483fa', border: 'none', borderRadius: '50%', width: '48px', height: '48px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', cursor: 'pointer', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>‹</button>
+                  <button onClick={() => setCurrentImgIndex((prev) => (prev + 1) % 3)} style={{position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', background: 'white', color: '#3483fa', border: 'none', borderRadius: '50%', width: '48px', height: '48px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', cursor: 'pointer', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>›</button>
+                </>
+              )}
+
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIs3DMode(!is3DMode); }} 
+                style={{position: 'absolute', bottom: 24, right: 24, background: is3DMode ? 'white' : '#333', color: is3DMode ? '#333' : 'white', border: 'none', padding: '12px 24px', borderRadius: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', zIndex: 10, fontWeight: 600, boxShadow: '0 4px 6px rgba(0,0,0,0.1)'}}
+              >
+                <Box size={20} /> {is3DMode ? 'Ver Fotos' : 'Recorrido Virtual 3D'}
+              </button>
             </div>
             
             <div style={{padding: '32px', overflowY: 'auto', display: 'flex', gap: '32px'}}>
@@ -574,8 +595,8 @@ const ClientPortalView = () => {
               </div>
 
               <div style={{flex: 1, border: '1px solid #e6e6e6', borderRadius: '8px', padding: '24px'}}>
-                <div style={{fontSize: '36px', fontWeight: 300, color: '#333', marginBottom: '4px'}}>${(Number(selectedProperty.price)/1000000).toFixed(1)}M</div>
-                <div style={{fontSize: '16px', color: '#333', marginBottom: '24px'}}>en <span style={{color: '#00a650'}}>240x ${(Number(selectedProperty.price)/240/1000).toFixed(1)}k sin interés</span></div>
+                <div style={{fontSize: '36px', fontWeight: 300, color: '#333', marginBottom: '4px'}}>${(Number(String(selectedProperty.price).replace(/[^0-9.-]+/g, ""))/1000000).toFixed(1)}M</div>
+                <div style={{fontSize: '16px', color: '#333', marginBottom: '24px'}}>en <span style={{color: '#00a650'}}>240x ${(Number(String(selectedProperty.price).replace(/[^0-9.-]+/g, ""))/240/1000).toFixed(1)}k sin interés</span></div>
 
                 <div style={{color: '#00a650', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px'}}>
                   <Zap size={18} fill="#00a650"/> Visita guiada <span style={{fontStyle: 'italic', fontWeight: 900}}>FULL</span>
@@ -1079,7 +1100,7 @@ function App() {
                             <div style={{fontWeight: 600, fontSize: '16px'}}>Luis Morales</div>
                             <div style={{fontSize: '13px', color: '#64748b'}}>luis.morales@3rconnect.com</div>
                             <div style={{fontSize: '12px', background: '#f1f5f9', color: '#475569', padding: '2px 8px', borderRadius: '12px', display: 'inline-block', marginTop: '4px', fontWeight: 600}}>
-                              Asesor Premium
+                              {isAdminRoute ? 'Director Comercial' : 'Asesor Premium'}
                             </div>
                           </div>
                         </div>
@@ -1097,12 +1118,17 @@ function App() {
 
                         {/* Menu Options */}
                         <div style={{padding: '8px 0'}}>
-                          {[
+                          {(isAdminRoute ? [
+                            { icon: Home, label: 'Inventario Global', action: () => { setCurrentView('inventory'); } },
+                            { icon: Users, label: 'Directorio de Asesores', action: () => setCurrentView('team-directory') },
+                            { icon: LayoutDashboard, label: 'Métricas Globales', action: () => setCurrentView('dashboard') },
+                            { icon: Settings, label: 'Configuración', action: () => setCurrentView('help-center') }
+                          ] : [
                             { icon: Home, label: 'Inmuebles Captados', action: () => { setCurrentView('crm'); setCurrentEntity({ type: 'property-list' }); } },
                             { icon: Users, label: 'Clientes Activos', action: () => setCurrentView('client-directory') },
                             { icon: TrendingUp, label: 'Cierres del Mes', action: () => setCurrentView('sales-closings') },
                             { icon: Settings, label: 'Ayuda / Soporte Asesores', action: () => setCurrentView('help-center') }
-                          ].map((item, i) => (
+                          ]).map((item, i) => (
                             <div 
                               key={i}
                               onClick={() => { setShowProfileMenu(false); item.action(); }}
