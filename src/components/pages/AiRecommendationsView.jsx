@@ -89,7 +89,7 @@ const AiRecommendationsView = () => {
       
       {/* Header */}
       <div style={{display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px', borderBottom: '1px solid #e2e8f0', paddingBottom: '24px'}}>
-        <div style={{width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(139, 92, 246, 0.2)'}}>
+        <div className="animate-glow-pulse" style={{width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(139, 92, 246, 0.2)'}}>
           <Sparkles size={28} color="white" />
         </div>
         <div>
@@ -100,21 +100,21 @@ const AiRecommendationsView = () => {
 
       {/* Global Stats */}
       <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '40px'}}>
-        <div style={{background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'}}>
+        <div className="animate-slide-up stagger-1" style={{background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', opacity: 0, animationFillMode: 'forwards'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', color: '#64748b'}}>
             <BarChart3 size={20} />
             <span style={{fontSize: '14px'}}>Salud del Inventario</span>
           </div>
           <div style={{fontSize: '32px', fontWeight: 700, color: '#10b981'}}>82% <span style={{fontSize: '14px', fontWeight: 400, color: '#64748b'}}>Óptimo</span></div>
         </div>
-        <div style={{background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'}}>
+        <div className="animate-slide-up stagger-2" style={{background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', opacity: 0, animationFillMode: 'forwards'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', color: '#64748b'}}>
             <AlertTriangle size={20} />
             <span style={{fontSize: '14px'}}>Inmuebles en Riesgo (Estancados)</span>
           </div>
           <div style={{fontSize: '32px', fontWeight: 700, color: '#ef4444'}}>3 <span style={{fontSize: '14px', fontWeight: 400, color: '#64748b'}}>Requieren acción</span></div>
         </div>
-        <div style={{background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'}}>
+        <div className="animate-slide-up stagger-3" style={{background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', opacity: 0, animationFillMode: 'forwards'}}>
           <div style={{position: 'absolute', right: -20, top: -20, opacity: 0.05}}>
             <Sparkles size={120} color="#8b5cf6" />
           </div>
@@ -130,10 +130,12 @@ const AiRecommendationsView = () => {
       {!alertDismissed && (
         <>
           <h3 style={{fontSize: '20px', marginBottom: '16px', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '8px'}}>
-            <AlertTriangle size={24} />
+            <div className="animate-headshake" style={{display: 'flex', alignItems: 'center'}}>
+              <AlertTriangle size={24} />
+            </div>
             Alertas Urgentes
           </h3>
-          <div style={{background: '#fef2f2', border: '1px solid #f87171', borderRadius: '12px', padding: '24px', marginBottom: '40px', display: 'flex', gap: '24px'}}>
+          <div className="animate-slide-up" style={{background: '#fef2f2', border: '1px solid #f87171', borderRadius: '12px', padding: '24px', marginBottom: '40px', display: 'flex', gap: '24px', opacity: 0, animationFillMode: 'forwards'}}>
             <div style={{flex: 1}}>
               <h4 style={{margin: '0 0 8px 0', color: '#b91c1c', fontSize: '18px'}}>Riesgo de Penalización: 3 Tareas de Seguimiento Vencidas</h4>
               <p style={{margin: 0, color: '#991b1b', fontSize: '15px', lineHeight: 1.6}}>
@@ -152,8 +154,11 @@ const AiRecommendationsView = () => {
                 disabled={resolvingAlert}
                 style={{
                   background: resolvingAlert ? '#fca5a5' : '#ef4444', color: 'white', border: 'none', padding: '12px', borderRadius: '8px',
-                  fontWeight: 600, fontSize: '14px', cursor: resolvingAlert ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+                  fontWeight: 600, fontSize: '14px', cursor: resolvingAlert ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  transition: 'background 0.2s ease, transform 0.15s ease'
                 }}
+                onMouseEnter={e=>{ if(!resolvingAlert) e.currentTarget.style.transform='translateY(-1px)'; }}
+                onMouseLeave={e=>{ if(!resolvingAlert) e.currentTarget.style.transform='translateY(0)'; }}
               >
                 {resolvingAlert ? 'Generando respuestas...' : <><Sparkles size={16} /> Auto-Resolver con IA</>}
               </button>
@@ -168,8 +173,8 @@ const AiRecommendationsView = () => {
       </h2>
 
       {activeInsights.length === 0 ? (
-        <div style={{background: 'white', borderRadius: '12px', padding: '64px 32px', border: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <div style={{width: '64px', height: '64px', borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px'}}>
+        <div className="animate-scale-in" style={{background: 'white', borderRadius: '12px', padding: '64px 32px', border: '1px solid #e2e8f0', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <div className="animate-scale-in" style={{width: '64px', height: '64px', borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px'}}>
             <CheckCircle2 size={32} color="#16a34a" />
           </div>
           <h3 style={{margin: '0 0 8px 0', fontSize: '20px', color: '#0f172a'}}>¡Todo al día!</h3>
@@ -177,8 +182,24 @@ const AiRecommendationsView = () => {
         </div>
       ) : (
         <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
-          {activeInsights.map(item => (
-            <div key={item.id} style={{background: 'white', borderRadius: '16px', border: `1px solid ${item.color}40`, display: 'flex', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.08)'}}>
+          {activeInsights.map((item, idx) => (
+            <div 
+              key={item.id} 
+              className={`animate-slide-up stagger-${Math.min(idx + 1, 6)}`} 
+              style={{
+                background: 'white', 
+                borderRadius: '16px', 
+                border: `1px solid ${item.color}40`, 
+                display: 'flex', 
+                overflow: 'hidden', 
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                opacity: 0,
+                animationFillMode: 'forwards',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.12)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)'; }}
+            >
               
               {/* Property Image & Info */}
               <div style={{width: '300px', background: '#f8fafc'}}>
@@ -246,8 +267,8 @@ const AiRecommendationsView = () => {
 
       {/* Message Suggestion Modal */}
       {showMessageModal && (
-        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={() => setShowMessageModal(false)}>
-          <div style={{background: 'white', borderRadius: '12px', width: '500px', maxWidth: '90%', padding: '32px', position: 'relative'}} onClick={e => e.stopPropagation()}>
+        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(3px)'}} onClick={() => setShowMessageModal(false)}>
+          <div className="animate-scale-in" style={{background: 'white', borderRadius: '12px', width: '500px', maxWidth: '90%', padding: '32px', position: 'relative', boxShadow: '0 20px 40px rgba(0,0,0,0.2)'}} onClick={e => e.stopPropagation()}>
             <div style={{display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px'}}>
               <div style={{width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #10b981, #3b82f6)', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <MessageCircle size={24} color="white" />
@@ -346,8 +367,8 @@ const AiRecommendationsView = () => {
 
       {/* Campaign Suggestion Modal */}
       {showCampaignModal && (
-        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={() => setShowCampaignModal(false)}>
-          <div style={{background: 'white', borderRadius: '12px', width: '550px', maxWidth: '90%', padding: '32px', position: 'relative'}} onClick={e => e.stopPropagation()}>
+        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(3px)'}} onClick={() => setShowCampaignModal(false)}>
+          <div className="animate-scale-in" style={{background: 'white', borderRadius: '12px', width: '550px', maxWidth: '90%', padding: '32px', position: 'relative', boxShadow: '0 20px 40px rgba(0,0,0,0.2)'}} onClick={e => e.stopPropagation()}>
             <div style={{display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px'}}>
               <div style={{width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #f59e0b, #ea580c)', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Megaphone size={24} color="white" />
@@ -356,7 +377,7 @@ const AiRecommendationsView = () => {
             </div>
 
             {campaignActivated ? (
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0'}}>
+              <div className="animate-scale-in" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0'}}>
                 <div style={{width: '64px', height: '64px', borderRadius: '50%', background: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px'}}>
                   <Rocket size={32} color="white" />
                 </div>
@@ -504,8 +525,8 @@ const AiRecommendationsView = () => {
 
       {/* Clients Match Suggestion Modal */}
       {showClientsModal && (
-        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={() => setShowClientsModal(false)}>
-          <div style={{background: 'white', borderRadius: '12px', width: '550px', maxWidth: '90%', padding: '32px', position: 'relative'}} onClick={e => e.stopPropagation()}>
+        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(3px)'}} onClick={() => setShowClientsModal(false)}>
+          <div className="animate-scale-in" style={{background: 'white', borderRadius: '12px', width: '550px', maxWidth: '90%', padding: '32px', position: 'relative', boxShadow: '0 20px 40px rgba(0,0,0,0.2)'}} onClick={e => e.stopPropagation()}>
             <div style={{display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px'}}>
               <div style={{width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #3b82f6, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Users size={24} color="white" />
@@ -514,7 +535,7 @@ const AiRecommendationsView = () => {
             </div>
 
             {clientsSent ? (
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0'}}>
+              <div className="animate-scale-in" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0'}}>
                 <div style={{width: '64px', height: '64px', borderRadius: '50%', background: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px'}}>
                   <CheckCircle2 size={32} color="white" />
                 </div>

@@ -37,6 +37,9 @@
   /* Transitions */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 }
 
 * {
@@ -194,10 +197,25 @@ a:hover {
 .badge-warning { background: rgba(245, 158, 11, 0.1); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3); }
 .badge-danger { background: rgba(239, 68, 68, 0.1); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-/* Animations */
+/* Animations & Keyframes */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes pulse-glow {
@@ -206,13 +224,110 @@ a:hover {
   100% { box-shadow: 0 0 0 0 rgba(52, 131, 250, 0); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+  50% { box-shadow: 0 4px 20px rgba(52, 131, 250, 0.4); }
 }
+
+@keyframes headShake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-8deg); }
+  40% { transform: rotate(8deg); }
+  60% { transform: rotate(-4deg); }
+  80% { transform: rotate(4deg); }
+}
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 4px 12px rgba(52, 131, 250, 0.25)); }
+  50% { transform: translateY(-8px) scale(1.04); filter: drop-shadow(0 12px 24px rgba(52, 131, 250, 0.45)); }
+}
+
+@keyframes ripplePulse {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  70% { transform: scale(1.4); opacity: 0.15; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+@keyframes shimmerProgress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Animation Utilities */
+.animate-fade-in {
+  animation: fadeIn 0.4s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.45s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.4s var(--ease-out-expo) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s var(--ease-out-expo) forwards;
+}
+
+.animate-headshake {
+  animation: headShake 0.6s ease-in-out 0.4s both;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: logoFloat 2.4s ease-in-out infinite;
+}
+
+.animate-ripple {
+  animation: ripplePulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* Stagger Delays */
+.stagger-1 { animation-delay: 0.04s; }
+.stagger-2 { animation-delay: 0.08s; }
+.stagger-3 { animation-delay: 0.12s; }
+.stagger-4 { animation-delay: 0.16s; }
+.stagger-5 { animation-delay: 0.20s; }
+.stagger-6 { animation-delay: 0.24s; }
+.stagger-7 { animation-delay: 0.28s; }
+.stagger-8 { animation-delay: 0.32s; }
 
 .delay-1 { animation-delay: 0.1s; }
 .delay-2 { animation-delay: 0.2s; }
 .delay-3 { animation-delay: 0.3s; }
+
+/* Typing Indicator */
+.typing-indicator {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  animation: typingDot 1.2s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 /* Scrollbar */
 ::-webkit-scrollbar {
@@ -242,7 +357,7 @@ a:hover {
   gap: var(--spacing-md);
   padding: var(--spacing-md) var(--spacing-xl);
   color: #94a3b8;
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast), background var(--transition-fast), border-left-color var(--transition-fast), transform var(--transition-fast);
   cursor: pointer;
   border-left: 3px solid transparent;
 }
@@ -250,6 +365,7 @@ a:hover {
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.05);
   color: #ffffff;
+  transform: translateX(2px);
 }
 
 .nav-item.active {
@@ -270,4 +386,14 @@ a:hover {
 
 .sidebar-logo span {
   color: #333333;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

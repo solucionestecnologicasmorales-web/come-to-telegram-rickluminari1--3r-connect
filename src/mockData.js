@@ -24,8 +24,10 @@ export const images = [
 export const mockProperties = Array.from({length: 50}).map((_, i) => {
   const type = propTypes[Math.floor(Math.random() * propTypes.length)];
   const zone = zones[Math.floor(Math.random() * zones.length)];
+  const code = `3R-${100 + i}`;
   return {
     id: `prop-${i}`,
+    code,
     title: `${type} en ${zone}`,
     price: new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(Math.floor(Math.random() * 200) * 100000 + 2000000),
     image: images[Math.floor(Math.random() * images.length)],
